@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration  -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user             -->
+<!--                                                                -->
+<!-- For professional support please see                            -->
+<!--    http://www.qos.ch/shop/products/professionalSupport         -->
+<!--                                                                -->
+<configuration scan="true">
+  <property name="APP" value="log-center"/>
+  <property name="LOG_HOME" value="/export/log/${APP}"/>
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yy-MM-dd.HH:mm:ss.SSS} [%-16t] %-5p %-22c{0} %X{ServiceId} - %m%n</pattern>
+    </encoder>
+  </appender>
+  <appender name="DETAIL" class="ch.qos.logback.core.rolling.RollingFileAppender" additivity="false">
+    <File>${LOG_HOME}/${APP}_detail.log</File>
+    <encoder>
+      <pattern>%d{yy-MM-dd.HH:mm:ss.SSS} [%-16t] %-5p %-22c{0} %X{ServiceId} - %m%n</pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_HOME}/${APP}_detail.log.%d{yyyyMMddHH}</fileNamePattern>
+    </rollingPolicy>
+  </appender>
+  <appender name="ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender" additivity="false">
+    <File>${LOG_HOME}/${APP}_access.log</File>
+    <encoder>
+      <pattern>%d{yy-MM-dd.HH:mm:ss.SSS};%X{ServiceId};%m%n</pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_HOME}/${APP}_access.log.%d{yyyyMMddHH}</fileNamePattern>
+    </rollingPolicy>
+  </appender>
+  <logger name="ACCESS">
+    <appender-ref ref="ACCESS"/>
+  </logger>
+  <appender name="INVOCATION" class="ch.qos.logback.core.rolling.RollingFileAppender" additivity="false">
+    <File>${LOG_HOME}/${APP}_invocation.log</File>
+    <encoder>
+      <pattern>%d{yy-MM-dd.HH:mm:ss.SSS};%X{ServiceId};%m%n</pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_HOME}/${APP}_invocation.log.%d{yyyyMMddHH}</fileNamePattern>
+    </rollingPolicy>
+  </appender>
+  <logger name="INVOCATION">
+    <appender-ref ref="INVOCATION"/>
+  </logger>
+  <logger name="INVOCATION.dubbo.com.jd.activemq.retry.service" level="WARN">
+    <appender-ref ref="INVOCATION"/>
+  </logger>
+  <logger name="org.springframework" level="WARN"/>
+  <logger name="org.apache.httpclient.wire" level="INFO"/>
+  <logger name="org.apache.commons.httpclient" level="INFO"/>
+  <logger name="org.apache.zookeeper" level="INFO"/>
+  <logger name="LOG_REDIS" level="WARN"/>
+  <logger name="ACCESS.dubbo.com.jd.activemq.retry.service.RetryService" level="WARN" />
+  <logger name="com.wangyin.customer.msp.CARMspMessageListener" level="INFO" />
+
+  <root level="INFO">
+    <appender-ref ref="DETAIL"/>
+    <appender-ref ref="CONSOLE"/>
+  </root>
+</configuration>

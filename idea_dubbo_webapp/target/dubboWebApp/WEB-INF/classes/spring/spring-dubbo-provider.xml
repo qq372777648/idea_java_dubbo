@@ -1,0 +1,40 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <dubbo:application name="lzw-dubbo-provider"/>
+
+    <dubbo:registry id="zk1" address="127.0.0.1:2181" protocol="zookeeper"/>
+
+
+
+
+    <!-- config file-->
+    <!--<context:property-placeholder location="classpath*:dubbo.properties" />-->
+    <!--<dubbo:registry id="zk1" address="${dubbo.register.address}" protocol="zookeeper"/>-->
+
+    <!-- 在zookeeper注册-->
+    <!--<dubbo:protocol id="myhttp" name="http" port="8888" host="127.0.0.1" server="jetty" serialization="json"/>-->
+    <dubbo:protocol id="mydubbo" name="dubbo" port="20884" host="127.0.0.1"/>
+    <dubbo:provider  protocol="mydubbo" />
+    <!--<dubbo:provider serialization="fastjson" protocol="myhttp,mydubbo" />-->
+
+    <!-- 要注册的服务 -->
+    <dubbo:service interface="net.lzw.interfaces.EatInterface" ref="eatInterface"/>
+    <!--<dubbo:service interface="net.lzw.interfaces.EatInterface" ref="eatInterface" async="true" path="EatInterface" version="0.0.1"/>-->
+
+
+
+
+
+
+
+
+
+</beans>
